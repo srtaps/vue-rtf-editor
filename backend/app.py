@@ -18,6 +18,10 @@ cursor = connection.cursor()
 
 app = Flask(__name__)
 
+# Set up Flask-JWT-Extended
+app.config['JWT_SECRET_KEY'] = 'n96zyydqxo09m7xs9c5ot2r828w52zs9' # Change this
+jwt = JWTManager(app)
+
 # Allow requests from Vue
 CORS(app)
 
