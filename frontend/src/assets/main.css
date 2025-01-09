@@ -6,4 +6,13 @@
 
 body {
   font-family: system-ui, sans-serif;
+  font-size: 1rem;
+}
+
+textarea,
+input {
+  font: inherit;
+  letter-spacing: inherit;
+  word-spacing: inherit;
+  padding: 4px;
 }
