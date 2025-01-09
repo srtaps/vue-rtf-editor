@@ -3,6 +3,14 @@ DROP DATABASE IF EXISTS vebprojekat;
 CREATE DATABASE IF NOT EXISTS vebprojekat;
 USE vebprojekat;
 
+CREATE TABLE IF NOT EXISTS roles (
+    role_id INT AUTO_INCREMENT PRIMARY KEY,
+    role_name VARCHAR(100) NOT NULL
+);
+
+INSERT INTO roles (role_name) VALUES ('Admin');
+INSERT INTO roles (role_name) VALUES ('User');
+
 CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
