@@ -9,8 +9,8 @@ from flask_jwt_extended import JWTManager, create_access_token, get_jwt, jwt_req
 connection = pymysql.connect(
     host='localhost',
     user='root',
-    password='your_password',
-    database='your_db_name',
+    password='root',
+    database='vebprojekat',
     cursorclass=pymysql.cursors.DictCursor
 )
 
@@ -31,18 +31,23 @@ def home():
     return "Hello, world!"
 
 # Register user route
-@app.get("/register", methods=['POST'])
+@app.route("/register", methods=['POST'])
 def register():
     try:
         data = request.get_json()
+
+        firstName = data['firstName']
+        lastName = data['lastName']
         email = data['email'].lower().strip()
         password = data['password']
-        # Additional columns will be added once the database schema is more structured
         
         hashed_password = generate_password_hash(password)
         cursor.execute(
-            'INSERT INTO users (email, password) VALUES (%s, %s)',
-            (email, hashed_password)
+            '''
+            INSERT INTO users (first_name, last_name, email, password_hash)
+            VALUES (%s, %s, %s, %s)
+            ''', 
+            (firstName, lastName, email, hashed_password)
         )
         connection.commit()
         return jsonify({'message': 'User registered successfully'}), 201
@@ -66,13 +71,14 @@ def login():
         
         cursor.execute('SELECT * FROM users WHERE email = %s', (email,))
         user = cursor.fetchone()
+        print(user)
         
-        if user and check_password_hash(user['password'], password):
+        if user and check_password_hash(user['password_hash'], password):
             access_token = create_access_token(
                 identity=email,
-                additional_claims={
-                    # Claims will be added when the schema is more structured
-                }
+                # additional_claims={
+                #     # Claims will be added when the schema is more structured
+                # }
             )
             
             return jsonify({
