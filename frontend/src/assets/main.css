@@ -19,3 +19,35 @@ input {
   word-spacing: inherit;
   padding: 4px;
 }
+
+#app {
+  min-height: 100vh;
+}
+
+.auth-card {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-card .container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.auth-card__left {
+  flex: 1;
+  padding: 20px;
+}
+
+.auth-card__right {
+  flex: 1;
+  padding: 20px;
+}
