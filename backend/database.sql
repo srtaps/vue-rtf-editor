@@ -3,7 +3,7 @@ DROP DATABASE IF EXISTS vebprojekat;
 CREATE DATABASE IF NOT EXISTS vebprojekat;
 USE vebprojekat;
 
-CREATE TABLE IF NOT EXISTS Users (
+CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
@@ -14,4 +14,4 @@ CREATE TABLE IF NOT EXISTS Users (
 );
 
 -- Optional: Add an index to email to speed up queries based on email
-CREATE INDEX idx_email ON Users(email);
+CREATE INDEX idx_email ON users(email);
