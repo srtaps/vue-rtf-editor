@@ -18,8 +18,25 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    full_name VARCHAR(255) AS (CONCAT(first_name, ' ', last_name)) VIRTUAL
+    full_name VARCHAR(255) AS (CONCAT(first_name, ' ', last_name)) VIRTUAL,
+    role_id INT,
+    FOREIGN KEY (role_id) REFERENCES roles(role_id)
 );
 
 -- Optional: Add an index to email to speed up queries based on email
 CREATE INDEX idx_email ON users(email);
+
+-- Setting DELIMITER to allow trigger creation
+DELIMITER //
+
+-- Create a trigger to automatically set the default role to 'User' if not specified
+CREATE TRIGGER set_default_role BEFORE INSERT ON users
+FOR EACH ROW
+BEGIN
+    IF NEW.role_id IS NULL THEN
+        SET NEW.role_id = (SELECT role_id FROM roles WHERE role_name = 'User' LIMIT 1);
+    END IF;
+END //
+
+-- Reset DELIMITER to the default
+DELIMITER ;
