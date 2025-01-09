@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS vebprojekat;
+
 CREATE DATABASE IF NOT EXISTS vebprojekat;
 USE vebprojekat;
 
