@@ -56,5 +56,38 @@ def register():
     except IntegrityError:
         return jsonify({'error': 'Email already registered'}), 409
 
+# Login user route
+@app.route("/login", methods=['POST'])
+def login():
+    try:
+        data = request.get_json()
+        email = data['email'].lower().strip()
+        password = data['password']
+        
+        cursor.execute('SELECT * FROM users WHERE email = %s', (email,))
+        user = cursor.fetchone()
+        
+        if user and check_password_hash(user['password'], password):
+            access_token = create_access_token(
+                identity=email,
+                additional_claims={
+                    # Claims will be added when the schema is more structured
+                }
+            )
+            
+            return jsonify({
+                'message': 'Login successful',
+                'access_token': access_token
+            }), 200
+        else:
+            return jsonify({
+                'error': 'Invalid email or password'
+            }), 401
+            
+    except KeyError as e:
+        return jsonify({
+            'error': f'Missing required field: {str(e)}'
+        }), 400
+
 if __name__ == '__main__':
     app.run(debug=True)
