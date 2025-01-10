@@ -9,7 +9,7 @@ body {
   font-size: 1rem;
   color: #fefefe;
   min-height: 100vh;
-  background-color: #313e51;
+  background-color: #21212d;
 }
 
 textarea,
@@ -32,22 +32,59 @@ input {
 }
 
 .auth-card .container {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(298px, 1fr));
   width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 600px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  overflow: hidden;
 }
 
 .auth-card__left {
   flex: 1;
   padding: 20px;
+  display: flex;
+  align-items: center;
 }
 
 .auth-card__right {
   flex: 1;
   padding: 20px;
+}
+
+#register-form label,
+#login-form label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 4px;
+}
+
+#register-form input,
+#login-form input {
+  margin-bottom: 12px;
+  width: 100%;
+  background-color: #f2f3f4;
+  border: none;
+}
+
+#register-form input:focus,
+#login-form input:focus {
+  outline: 4px solid #645fc6;
+}
+
+.button--submit {
+  background-color: #645fc6;
+  width: 100%;
+  display: block;
+  margin-top: 12px;
+
+  font: inherit;
+  font-size: 1.2rem;
+  color: #fefefe;
+  font-weight: bold;
+  text-transform: uppercase;
+
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
 }

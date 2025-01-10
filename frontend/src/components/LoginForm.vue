@@ -4,6 +4,6 @@
     <input type="email" id="email" name="email" required />
     <label for="password">Password</label>
     <input type="password" id="password" name="password" required />
-    <button type="submit">Log in</button>
+    <button class="button--submit" type="submit">Log in</button>
   </form>
 </template>
