@@ -12,6 +12,10 @@ body {
   background-color: #21212d;
 }
 
+a {
+  color: #4ac3e3;
+}
+
 textarea,
 input {
   font: inherit;
@@ -33,18 +37,23 @@ input {
 
 .auth-card .container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(298px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(318px, 1fr));
   width: 100%;
-  max-width: 600px;
+  max-width: 640px;
   border: 1px solid #ddd;
   border-radius: 8px;
+}
+
+.auth-card__title {
+  margin-bottom: 24px;
 }
 
 .auth-card__left {
   flex: 1;
   padding: 20px;
   display: flex;
-  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .auth-card__right {
