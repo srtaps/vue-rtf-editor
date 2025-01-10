@@ -22,31 +22,26 @@
   </div>
 </template>
 
-<script>
+<script setup>
 // Import defineAsyncComponent to handle async component loading
-import { defineAsyncComponent } from "vue";
+import { computed, defineAsyncComponent } from "vue";
 
-export default {
-  props: {
-    formType: {
-      type: String,
-      required: true,
-    },
+const props = defineProps({
+  formType: {
+    type: String,
+    required: true,
   },
-  computed: {
-    heading() {
-      return this.formType === "register"
-        ? "Join our community"
-        : "Welcome to VueLearn";
-    },
-    formComponent() {
-      // Lazy loading components
-      return this.formType === "register"
-        ? defineAsyncComponent(() => import("@/components/RegisterForm.vue"))
-        : defineAsyncComponent(() => import("@/components/LoginForm.vue"));
-    },
-  },
-};
+});
+
+const heading = computed(() =>
+  props.formType === "register" ? "Join our community" : "Welcome to VueLearn"
+);
+
+const formComponent = computed(() =>
+  props.formType === "register"
+    ? defineAsyncComponent(() => import("@/components/RegisterForm.vue"))
+    : defineAsyncComponent(() => import("@/components/LoginForm.vue"))
+);
 </script>
 
 <style scoped></style>
