@@ -69,16 +69,21 @@ def login():
         email = data['email'].lower().strip()
         password = data['password']
         
-        cursor.execute('SELECT * FROM users WHERE email = %s', (email,))
+        cursor.execute('''
+            SELECT users.*, roles.role_name as role_name 
+            FROM users 
+            JOIN roles ON users.role_id = roles.role_id 
+            WHERE users.email = %s
+        ''', (email,))
         user = cursor.fetchone()
-        print(user)
         
         if user and check_password_hash(user['password_hash'], password):
             access_token = create_access_token(
                 identity=email,
-                # additional_claims={
-                #     # Claims will be added when the schema is more structured
-                # }
+                additional_claims={
+                    'user_id': user['user_id'],
+                    'role': user['role_name']
+                }
             )
             
             return jsonify({
