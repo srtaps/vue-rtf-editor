@@ -1,5 +1,6 @@
-import AuthCard from "@/components/AuthCard.vue";
 import { createRouter, createWebHistory } from "vue-router";
+import AuthCard from "@/components/AuthCard.vue";
+import Home from "@/views/Home.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,7 +17,27 @@ const router = createRouter({
       component: AuthCard,
       props: { formType: "login" },
     },
+    {
+      path: "/home",
+      name: "Home",
+      component: Home,
+      meta: { requiresAuth: true },
+    },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem("access_token");
+
+  if (to.meta.requiresAuth && !token) {
+    next("/login");
+    return;
+  } else if (to.name === "Login" && token) {
+    next("/home");
+    return;
+  }
+
+  next();
 });
 
 export default router;
