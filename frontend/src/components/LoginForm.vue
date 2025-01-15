@@ -46,7 +46,7 @@ const loginSubmit = async (event) => {
       email.value = "";
       password.value = "";
 
-      router.push("/dashboard");
+      router.push("/home");
     } else {
       console.log(data.error);
     }
