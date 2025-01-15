@@ -32,8 +32,11 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !token) {
     next("/login");
     return;
-  } else if (to.name === "Login" && token) {
+  } else if ((to.name === "Login" || to.name === "Register") && token) {
     next("/home");
+    return;
+  } else if (to.path === "/") {
+    next("/login");
     return;
   }
 
