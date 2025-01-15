@@ -54,10 +54,10 @@ const registerSubmit = async (event) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        firstName: firstName.value,
-        lastName: lastName.value,
-        email: email.value,
-        password: password.value,
+        firstName: firstName.value.trim(),
+        lastName: lastName.value.trim(),
+        email: email.value.trim(),
+        password: password.value.trim(),
       }),
     });
 
