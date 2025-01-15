@@ -10,7 +10,7 @@
       name="password"
       required
     />
-    <button class="button--submit" type="submit" :disabled="isLoading">
+    <button class="button button--submit" type="submit" :disabled="isLoading">
       {{ isLoading ? "Logging in..." : "Log in" }}
     </button>
   </form>

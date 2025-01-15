@@ -81,15 +81,19 @@ input {
   outline: 4px solid #645fc6;
 }
 
+.button {
+  font: inherit;
+  border: none;
+  color: #fefefe;
+}
+
 .button--submit {
   background-color: #645fc6;
   width: 100%;
   display: block;
   margin-top: 12px;
 
-  font: inherit;
   font-size: 1.2rem;
-  color: #fefefe;
   font-weight: bold;
   text-transform: uppercase;
 

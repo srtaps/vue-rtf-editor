@@ -26,7 +26,7 @@
       name="password"
       required
     />
-    <button class="button--submit" type="submit" :disabled="isLoading">
+    <button class="button button--submit" type="submit" :disabled="isLoading">
       {{ isLoading ? "Registering..." : "Register" }}
     </button>
   </form>
