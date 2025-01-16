@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import AuthCard from "@/components/AuthCard.vue";
 import Home from "@/views/Home.vue";
+import LessonEditor from "@/views/LessonEditor.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,6 +22,12 @@ const router = createRouter({
       path: "/home",
       name: "Home",
       component: Home,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/new-lesson",
+      name: "Editor",
+      component: LessonEditor,
       meta: { requiresAuth: true },
     },
   ],

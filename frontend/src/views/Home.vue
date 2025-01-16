@@ -1,8 +1,8 @@
 <template>
-  <div class="home">
+  <div id="home">
     <Navbar />
     <div class="btn-container">
-      <a href="#"
+      <a href="/new-lesson"
         ><button class="button button--add-post">+ Add New Lesson</button></a
       >
     </div>

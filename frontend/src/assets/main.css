@@ -140,3 +140,12 @@ input {
   width: 80%;
   margin: 0 auto;
 }
+
+#new-lesson .wrapper {
+  margin-top: 24px;
+}
+
+.editor-container {
+  color: black;
+  border-radius: 4px;
+}
