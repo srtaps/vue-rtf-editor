@@ -102,3 +102,17 @@ input {
   border-radius: 8px;
   padding: 8px 16px;
 }
+
+.button--submit:hover {
+  background-color: #433ead;
+}
+
+.button--logout {
+  background-color: #525868;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+
+.button--logout:hover {
+  background-color: #424653;
+}
