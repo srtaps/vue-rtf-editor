@@ -28,7 +28,7 @@ const handleLogout = () => {
 .navigation {
   background-color: #2c2c38;
   font-size: 1.1rem;
-  padding: 16px 24px;
+  padding: 16px 32px;
   display: flex;
   justify-content: space-between;
 }
