@@ -83,6 +83,7 @@ input {
 
 .button {
   font: inherit;
+  padding: 8px 16px;
   border: none;
   color: #fefefe;
   cursor: pointer;
@@ -100,7 +101,6 @@ input {
 
   border: none;
   border-radius: 8px;
-  padding: 8px 16px;
 }
 
 .button--submit:hover {
@@ -109,10 +109,34 @@ input {
 
 .button--logout {
   background-color: #525868;
-  padding: 8px 16px;
   border-radius: 4px;
 }
 
 .button--logout:hover {
   background-color: #424653;
+}
+
+.button--add-post {
+  background-color: #645fc6;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.button--add-post:hover {
+  background-color: #433ead;
+}
+
+.btn-container {
+  text-align: center;
+  padding: 24px 0px;
+}
+
+.home {
+  min-height: 100vh;
+}
+
+.wrapper {
+  width: 80%;
+  margin: 0 auto;
 }

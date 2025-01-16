@@ -1,6 +1,15 @@
 <template>
-  <Navbar />
-  <h1>Home page</h1>
+  <div class="home">
+    <Navbar />
+    <div class="btn-container">
+      <a href="#"
+        ><button class="button button--add-post">+ Add New Lesson</button></a
+      >
+    </div>
+    <div class="wrapper">
+      <h1>Home</h1>
+    </div>
+  </div>
 </template>
 
 <script setup>
