@@ -85,6 +85,7 @@ input {
   font: inherit;
   border: none;
   color: #fefefe;
+  cursor: pointer;
 }
 
 .button--submit {
