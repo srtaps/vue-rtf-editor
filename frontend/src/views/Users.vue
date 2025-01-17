@@ -4,9 +4,8 @@
     <div class="vue-views__container">
       <h2>Users</h2>
 
-      <div v-if="loading" class="status-message">Loading users...</div>
-
-      <div v-if="error" class="status-message">Error: {{ error }}</div>
+      <div v-if="loading" class="mt-16">Loading users...</div>
+      <div v-if="error" class="mt-16">Error: {{ error }}</div>
 
       <div v-if="!loading && !error" class="">
         <table class="">
@@ -64,7 +63,7 @@ const fetchUsers = async () => {
     });
 
     if (!response.ok) {
-      throw new Error(`Error, status: ${response.status}`);
+      throw new Error(`Status: ${response.status}`);
     }
 
     const data = await response.json();
