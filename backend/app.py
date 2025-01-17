@@ -5,17 +5,16 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt, jwt_required
 
-# Connection to database
-connection = pymysql.connect(
-    host='localhost',
-    user='root',
-    password='root',
-    database='vebprojekat',
-    cursorclass=pymysql.cursors.DictCursor
-)
-
-# Create the cursor, keep it open
-cursor = connection.cursor()
+# Create new DB connection
+def get_db():
+    connection = pymysql.connect(
+        host='localhost',
+        user='root',
+        password='root',
+        database='vebprojekat',
+        cursorclass=pymysql.cursors.DictCursor
+    )
+    return connection, connection.cursor()
 
 app = Flask(__name__)
 
@@ -26,13 +25,10 @@ jwt = JWTManager(app)
 # Allow requests from Vue
 CORS(app)
 
-@app.get("/")
-def home():
-    return "Hello, world!"
-
 # Register user route
 @app.route("/register", methods=['POST'])
 def register():
+    connection, cursor = get_db()
     try:
         data = request.get_json()
 
@@ -50,6 +46,7 @@ def register():
             (firstName, lastName, email, hashed_password)
         )
         connection.commit()
+        
         return jsonify({'message': 'User registered successfully'}), 201
 
     except KeyError as e:
@@ -60,10 +57,15 @@ def register():
         
     except IntegrityError:
         return jsonify({'error': 'Email already registered'}), 409
+    
+    finally:
+        cursor.close()
+        connection.close()
 
 # Login user route
 @app.route("/login", methods=['POST'])
 def login():
+    connection, cursor = get_db()
     try:
         data = request.get_json()
         email = data['email'].lower().strip()
@@ -99,10 +101,15 @@ def login():
         return jsonify({
             'error': f'Missing required field: {str(e)}'
         }), 400
+    
+    finally:
+        cursor.close()
+        connection.close()
 
 # Get users
 @app.route('/users', methods=['GET'])
 def get_users():
+    connection, cursor = get_db()
     try:
         cursor.execute("""
             SELECT u.user_id, u.full_name, u.email, u.created_at, r.role_name
@@ -110,16 +117,20 @@ def get_users():
             LEFT JOIN roles r ON u.role_id = r.role_id
         """)
         users = cursor.fetchall()
-        connection.commit()
         
         return jsonify(users)
     
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
+    finally:
+        cursor.close()
+        connection.close()
+    
 # Get individual user
 @app.route('/users/<int:user_id>', methods=['GET'])
 def get_user(user_id):
+    connection, cursor = get_db()
     try:
         cursor.execute("""
             SELECT u.user_id, u.first_name, u.last_name, 
@@ -137,6 +148,60 @@ def get_user(user_id):
     
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+    finally:
+        cursor.close()
+        connection.close()
+
+# Update user
+@app.route('/users/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    connection, cursor = get_db()
+    try:
+        data = request.json
+        
+        cursor.execute("""
+            UPDATE users 
+            SET first_name = %s,
+                last_name = %s,
+                email = %s,
+                role_id = %s
+            WHERE user_id = %s
+        """, (
+            data['first_name'],
+            data['last_name'],
+            data['email'],
+            data['role_id'],
+            user_id
+        ))
+        
+        connection.commit()
+
+        return jsonify({'message': 'User has been updated.'})
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+    finally:
+        cursor.close()
+        connection.close()
+    
+# Get roles
+@app.route('/roles', methods=['GET'])
+def get_roles():
+    connection, cursor = get_db()
+    try:
+        cursor.execute("SELECT role_id, role_name FROM roles ORDER BY role_id")
+        roles = cursor.fetchall()
+
+        return jsonify(roles)
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+    finally:
+        cursor.close()
+        connection.close()
 
 if __name__ == '__main__':
     app.run(debug=True)
