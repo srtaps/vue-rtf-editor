@@ -12,19 +12,29 @@
         <table class="">
           <thead>
             <tr>
-              <th class="">Full Name</th>
-              <th class="">Email</th>
-              <th class="">Role</th>
-              <th class="">Created At</th>
+              <th>Full Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Created At</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="user in users" :key="user.user_id">
-              <td class="">{{ user.full_name }}</td>
-              <td class="">{{ user.email }}</td>
-              <td class="">{{ user.role_name }}</td>
-              <td class="">
+              <td>{{ user.full_name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.role_name }}</td>
+              <td>
                 {{ new Date(user.created_at).toLocaleDateString() }}
+              </td>
+              <td>
+                <button
+                  @click="editUser(user.user_id)"
+                  class="button button--edit"
+                >
+                  Edit
+                </button>
+                <button class="button button--delete">Delete</button>
               </td>
             </tr>
           </tbody>
@@ -36,8 +46,10 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import Navbar from "@/components/Navbar.vue";
 
+const router = useRouter();
 const users = ref([]);
 const loading = ref(true);
 const error = ref(null);
@@ -63,6 +75,13 @@ const fetchUsers = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+const editUser = (userId) => {
+  router.push({
+    name: "EditUser",
+    query: { userId },
+  });
 };
 
 onMounted(() => {
@@ -91,5 +110,24 @@ th {
 
 tr:hover {
   background-color: #47447a;
+}
+
+.button--edit {
+  margin-right: 32px;
+  background-color: #5f7ec6;
+  border-radius: 8px;
+}
+
+.button--edit:hover {
+  background-color: #4165b8;
+}
+
+.button--delete {
+  border-radius: 8px;
+  background-color: #c65f63;
+}
+
+.button--delete:hover {
+  background-color: #b84146;
 }
 </style>
