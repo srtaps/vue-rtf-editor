@@ -145,3 +145,7 @@ input {
   color: black;
   border-radius: 4px;
 }
+
+.status-message {
+  margin-top: 16px;
+}
