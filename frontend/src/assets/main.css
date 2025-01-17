@@ -17,11 +17,16 @@ a {
 }
 
 textarea,
-input {
+input,
+select {
   font: inherit;
   letter-spacing: inherit;
   word-spacing: inherit;
   padding: 4px;
+}
+
+select {
+  padding: 4px 8px;
 }
 
 #app {
@@ -62,14 +67,16 @@ input {
 }
 
 #register-form label,
-#login-form label {
+#login-form label,
+#edit-form label {
   font-weight: bold;
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 
 #register-form input,
-#login-form input {
+#login-form input,
+#edit-form input {
   margin-bottom: 12px;
   width: 100%;
   background-color: #f2f3f4;
@@ -77,7 +84,8 @@ input {
 }
 
 #register-form input:focus,
-#login-form input:focus {
+#login-form input:focus,
+#edit-form input:focus {
   outline: 4px solid #645fc6;
 }
 
@@ -141,11 +149,19 @@ input {
   margin: 24px auto;
 }
 
+#edit-user .vue-views__container {
+  max-width: 440px;
+}
+
 .editor-container {
   color: black;
   border-radius: 4px;
 }
 
-.status-message {
+.mt-16 {
   margin-top: 16px;
+}
+
+.mt-32 {
+  margin-top: 32px;
 }
