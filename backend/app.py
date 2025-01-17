@@ -100,5 +100,21 @@ def login():
             'error': f'Missing required field: {str(e)}'
         }), 400
 
+# Get users
+@app.route('/users', methods=['GET'])
+def get_users():
+    try:
+        cursor.execute("""
+            SELECT u.user_id, u.full_name, u.email, u.created_at, r.role_name
+            FROM users u
+            LEFT JOIN roles r ON u.role_id = r.role_id
+        """)
+        users = cursor.fetchall()
+        connection.commit()
+        
+        return jsonify(users)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 if __name__ == '__main__':
     app.run(debug=True)
