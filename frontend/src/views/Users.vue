@@ -11,6 +11,7 @@
         <table class="">
           <thead>
             <tr>
+              <th>User ID</th>
               <th>Full Name</th>
               <th>Email</th>
               <th>Role</th>
@@ -20,6 +21,7 @@
           </thead>
           <tbody>
             <tr v-for="user in users" :key="user.user_id">
+              <td>{{ user.user_id }}</td>
               <td>{{ user.full_name }}</td>
               <td>{{ user.email }}</td>
               <td>{{ user.role_name }}</td>
@@ -33,7 +35,12 @@
                 >
                   Edit
                 </button>
-                <button class="button button--delete">Delete</button>
+                <button
+                  @click="deleteUser(user.user_id)"
+                  class="button button--delete"
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           </tbody>
@@ -83,6 +90,27 @@ const editUser = (userId) => {
   });
 };
 
+const deleteUser = async (userId) => {
+  if (confirm(`Delete user ID: ${userId}?`)) {
+    try {
+      const response = await fetch(`http://localhost:5000/users/${userId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      fetchUsers();
+    } catch (err) {
+      console.error("Error deleting user:", err);
+    }
+  }
+};
+
 onMounted(() => {
   fetchUsers();
 });
@@ -108,7 +136,7 @@ th {
 }
 
 tr:hover {
-  background-color: #47447a;
+  background-color: #47447a50;
 }
 
 .button--edit {
