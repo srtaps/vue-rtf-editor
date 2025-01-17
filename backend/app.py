@@ -113,6 +113,28 @@ def get_users():
         connection.commit()
         
         return jsonify(users)
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+# Get individual user
+@app.route('/users/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+    try:
+        cursor.execute("""
+            SELECT u.user_id, u.first_name, u.last_name, 
+                   u.email, u.role_id, r.role_name
+            FROM users u
+            LEFT JOIN roles r ON u.role_id = r.role_id
+            WHERE u.user_id = %s
+        """, (user_id,))
+        
+        user = cursor.fetchone()
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+            
+        return jsonify(user)
+    
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
