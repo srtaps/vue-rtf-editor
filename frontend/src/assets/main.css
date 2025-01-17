@@ -138,11 +138,7 @@ input {
 
 .vue-views__container {
   width: 80%;
-  margin: 0 auto;
-}
-
-#new-lesson .wrapper {
-  margin-top: 24px;
+  margin: 24px auto;
 }
 
 .editor-container {
