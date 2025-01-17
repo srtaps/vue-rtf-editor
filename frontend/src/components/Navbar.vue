@@ -30,6 +30,7 @@ const handleLogout = () => {
   font-size: 1.1rem;
   padding: 16px 32px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 
