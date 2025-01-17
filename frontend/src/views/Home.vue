@@ -1,12 +1,12 @@
 <template>
-  <div id="home">
+  <div class="vue-views" id="home">
     <Navbar />
     <div class="btn-container">
       <a href="/new-lesson"
         ><button class="button button--add-post">+ Add New Lesson</button></a
       >
     </div>
-    <div class="wrapper">
+    <div class="vue-views__container">
       <h1>Home</h1>
     </div>
   </div>

@@ -132,11 +132,11 @@ input {
   padding: 24px 0px;
 }
 
-.home {
+.vue-views {
   min-height: 100vh;
 }
 
-.wrapper {
+.vue-views__container {
   width: 80%;
   margin: 0 auto;
 }

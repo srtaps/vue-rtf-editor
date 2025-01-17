@@ -1,7 +1,7 @@
 <template>
-  <div id="new-lesson">
+  <div class="vue-views" id="new-lesson">
     <Navbar />
-    <div class="wrapper">
+    <div class="vue-views__container">
       <Editor />
     </div>
   </div>
