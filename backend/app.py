@@ -159,6 +159,12 @@ def update_user(user_id):
     connection, cursor = get_db()
     try:
         data = request.json
+
+        cursor.execute("SELECT * FROM users WHERE user_id = %s", (user_id,))
+        user = cursor.fetchone()
+
+        if user is None:
+            return jsonify({'message': 'User not found.'}), 404
         
         cursor.execute("""
             UPDATE users 
@@ -185,7 +191,34 @@ def update_user(user_id):
     finally:
         cursor.close()
         connection.close()
+
+# Delete user
+@app.route('/users/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    connection, cursor = get_db()
+    try:
+        cursor.execute("SELECT * FROM users WHERE user_id = %s", (user_id,))
+        user = cursor.fetchone()
+        
+        if user is None:
+            return jsonify({'message': 'User not found.'}), 404
+
+        cursor.execute("""
+            DELETE FROM users
+            WHERE user_id = %s
+        """, (user_id,))
+        
+        connection.commit()
+
+        return jsonify({'message': 'User has been deleted.'})
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
     
+    finally:
+        cursor.close()
+        connection.close()
+
 # Get roles
 @app.route('/roles', methods=['GET'])
 def get_roles():
