@@ -3,6 +3,7 @@ import AuthCard from "@/components/AuthCard.vue";
 import Home from "@/views/Home.vue";
 import LessonEditor from "@/views/LessonEditor.vue";
 import Users from "@/views/Users.vue";
+import EditUser from "@/views/EditUser.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,6 +36,12 @@ const router = createRouter({
       path: "/users",
       name: "Users",
       component: Users,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/users/edit",
+      name: "EditUser",
+      component: EditUser,
       meta: { requiresAuth: true },
     },
   ],
