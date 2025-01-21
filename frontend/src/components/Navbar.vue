@@ -5,6 +5,7 @@
       <ul class="link__list">
         <li><a href="/home">Home</a></li>
         <li><a href="/users">Users</a></li>
+        <li><a href="/courses">Courses</a></li>
       </ul>
       <button @click="handleLogout" class="button button--logout">
         Logout

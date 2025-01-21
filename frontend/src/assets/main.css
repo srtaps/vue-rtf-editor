@@ -89,6 +89,19 @@ select {
   outline: 4px solid #645fc6;
 }
 
+#edit-form textarea {
+  margin-bottom: 12px;
+  width: 100%;
+  background-color: #f2f3f4;
+  border: none;
+  resize: none;
+  height: 200px;
+}
+
+#edit-form textarea:focus {
+  outline: 4px solid #645fc6;
+}
+
 .button {
   font: inherit;
   padding: 8px 16px;
@@ -190,7 +203,8 @@ tr:hover {
   background-color: #b84146;
 }
 
-#edit-user .vue-views__container {
+#edit-user .vue-views__container,
+#edit-course .vue-views__container {
   max-width: 440px;
 }
 

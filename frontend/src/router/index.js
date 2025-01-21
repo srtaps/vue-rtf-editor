@@ -4,6 +4,8 @@ import Home from "@/views/Home.vue";
 import LessonEditor from "@/views/LessonEditor.vue";
 import Users from "@/views/Users.vue";
 import EditUser from "@/views/EditUser.vue";
+import Courses from "@/views/Courses.vue";
+import EditCourse from "@/views/EditCourse.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +44,18 @@ const router = createRouter({
       path: "/users/edit",
       name: "EditUser",
       component: EditUser,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/courses",
+      name: "Courses",
+      component: Courses,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/course/edit",
+      name: "EditCourse",
+      component: EditCourse,
       meta: { requiresAuth: true },
     },
   ],
