@@ -203,11 +203,7 @@ def delete_user(user_id):
         if user is None:
             return jsonify({'message': 'User not found.'}), 404
 
-        cursor.execute("""
-            DELETE FROM users
-            WHERE user_id = %s
-        """, (user_id,))
-        
+        cursor.execute("DELETE FROM users WHERE user_id = %s", (user_id,))
         connection.commit()
 
         return jsonify({'message': 'User has been deleted.'})
@@ -229,6 +225,103 @@ def get_roles():
 
         return jsonify(roles)
     
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+    finally:
+        cursor.close()
+        connection.close()
+
+# Get courses
+@app.route('/courses', methods=['GET'])
+def get_courses():
+    connection, cursor = get_db()
+    try:
+        cursor.execute("SELECT * FROM courses")
+        courses = cursor.fetchall()
+
+        return jsonify(courses)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+    finally:
+        cursor.close()
+        connection.close()
+
+# Get individual course
+@app.route('/courses/<int:course_id>', methods=['GET'])
+def get_course(course_id):
+    connection, cursor = get_db()
+    try:
+        cursor.execute("SELECT * FROM courses WHERE course_id = %s", (course_id,))
+        
+        course = cursor.fetchone()
+        if not course:
+            return jsonify({'error': 'Course not found'}), 404
+            
+        return jsonify(course)
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+    finally:
+        cursor.close()
+        connection.close()
+
+# Update course
+@app.route('/users/<int:course_id>', methods=['PUT'])
+def update_course(course_id):
+    connection, cursor = get_db()
+    try:
+        data = request.json
+
+        cursor.execute("SELECT * FROM courses WHERE course_id = %s", (course_id,))
+        course = cursor.fetchone()
+
+        if course is None:
+            return jsonify({'message': 'Course not found.'}), 404
+        
+        cursor.execute("""
+            UPDATE courses 
+            SET title = %s,
+                info = %s,
+                professor = %s,
+            WHERE course_id = %s
+        """, (
+            data['title'],
+            data['info'],
+            data['professor'],
+            course_id
+        ))
+        
+        connection.commit()
+
+        return jsonify({'message': 'Course has been updated.'})
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+    finally:
+        cursor.close()
+        connection.close()
+
+# Delete course
+@app.route('/courses/<int:course_id>', methods=['DELETE'])
+def delete_course(course_id):
+    connection, cursor = get_db()
+    try:
+        cursor.execute("SELECT * FROM courses WHERE course_id = %s", (course_id,))
+        course = cursor.fetchone()
+        
+        if course is None:
+            return jsonify({'message': 'Course not found.'}), 404
+
+        cursor.execute("DELETE FROM courses WHERE course_id = %s", (course_id,))
+        connection.commit()
+
+        return jsonify({'message': 'Course has been deleted.'})
+        
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
