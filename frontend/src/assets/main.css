@@ -149,6 +149,47 @@ select {
   margin: 24px auto;
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 24px;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #555555;
+}
+
+th {
+  background-color: #645fc6;
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: #47447a50;
+}
+
+.button--edit {
+  margin-right: 32px;
+  background-color: #5f7ec6;
+  border-radius: 8px;
+}
+
+.button--edit:hover {
+  background-color: #4165b8;
+}
+
+.button--delete {
+  border-radius: 8px;
+  background-color: #c65f63;
+}
+
+.button--delete:hover {
+  background-color: #b84146;
+}
+
 #edit-user .vue-views__container {
   max-width: 440px;
 }
