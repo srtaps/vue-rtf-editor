@@ -23,6 +23,20 @@ CREATE TABLE IF NOT EXISTS users (
     FOREIGN KEY (role_id) REFERENCES roles(role_id)
 );
 
+CREATE TABLE IF NOT EXISTS courses (
+    course_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    info TEXT,
+    professor VARCHAR(100)
+);
+
+INSERT INTO courses (course_id, title, info, professor) VALUES 
+    (1, 'Introduction to Computer Science', 'Fundamentals of programming and computational thinking', 'Dr. Smith'),
+    (2, 'Advanced Mathematics', 'Complex analysis and abstract algebra', 'Dr. Johnson'),
+    (3, 'World History', 'Comprehensive study of major historical events', 'Prof. Williams'),
+    (4, 'Organic Chemistry', 'Study of organic compounds and reactions', 'Dr. Brown'),
+    (5, 'Literature Analysis', 'Critical analysis of classical literature', 'Prof. Davis');
+
 -- Optional: Add an index to email to speed up queries based on email
 CREATE INDEX idx_email ON users(email);
 
