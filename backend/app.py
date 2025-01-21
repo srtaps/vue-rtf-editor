@@ -269,6 +269,40 @@ def get_course(course_id):
         cursor.close()
         connection.close()
 
+# Add course
+@app.route('/courses', methods=['POST'])
+def add_course():
+    connection, cursor = get_db()
+    try:
+        data = request.get_json()
+
+        title = data['title']
+        info = data['info']
+        professor = data['professor']
+
+        cursor.execute(
+            '''
+            INSERT INTO courses (title, info, professor)
+            VALUES (%s, %s, %s)
+            ''', 
+            (title, info, professor)
+        )
+        connection.commit()
+        
+        return jsonify({'message': 'Course added successfully'}), 201
+
+    except KeyError as e:
+        return jsonify({
+            'error': f'Missing required field: {str(e)}'
+        }), 400
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+    finally:
+        cursor.close()
+        connection.close()
+
 # Update course
 @app.route('/users/<int:course_id>', methods=['PUT'])
 def update_course(course_id):
