@@ -10,7 +10,7 @@
       <form
         v-if="!loading && !error"
         @submit.prevent="editSubmit"
-        class="form mt-16"
+        class="form mt-32"
         id="edit-form"
       >
         <label for="first-name">First name</label>
