@@ -184,6 +184,11 @@ def update_user(user_id):
         connection.commit()
 
         return jsonify({'message': 'User has been updated.'})
+    
+    except KeyError as e:
+        return jsonify({
+            'error': f'Missing required field: {str(e)}'
+        }), 400
         
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -304,7 +309,7 @@ def add_course():
         connection.close()
 
 # Update course
-@app.route('/users/<int:course_id>', methods=['PUT'])
+@app.route('/courses/<int:course_id>', methods=['PUT'])
 def update_course(course_id):
     connection, cursor = get_db()
     try:
@@ -320,7 +325,7 @@ def update_course(course_id):
             UPDATE courses 
             SET title = %s,
                 info = %s,
-                professor = %s,
+                professor = %s
             WHERE course_id = %s
         """, (
             data['title'],
@@ -332,6 +337,11 @@ def update_course(course_id):
         connection.commit()
 
         return jsonify({'message': 'Course has been updated.'})
+    
+    except KeyError as e:
+        return jsonify({
+            'error': f'Missing required field: {str(e)}'
+        }), 400
         
     except Exception as e:
         return jsonify({'error': str(e)}), 500
