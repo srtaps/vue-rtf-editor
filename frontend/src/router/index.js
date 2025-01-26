@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import AuthCard from "@/components/AuthCard.vue";
 import Home from "@/views/Home.vue";
-import LessonEditor from "@/views/LessonEditor.vue";
+import EditLesson from "@/views/EditLesson.vue";
 import Users from "@/views/Users.vue";
 import EditUser from "@/views/EditUser.vue";
 import Courses from "@/views/Courses.vue";
@@ -31,7 +31,7 @@ const router = createRouter({
     {
       path: "/new-lesson",
       name: "Editor",
-      component: LessonEditor,
+      component: EditLesson,
       meta: { requiresAuth: true },
     },
     {
