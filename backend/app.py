@@ -373,5 +373,28 @@ def delete_course(course_id):
         cursor.close()
         connection.close()
 
+# Get lessons
+@app.route('/lessons', methods=['GET'])
+def get_lessons():
+    connection, cursor = get_db()
+    try:
+        cursor.execute("""
+            SELECT 
+                lessons.lesson_id, lessons.title, lessons.content, 
+                courses.title AS course_title
+            FROM lessons 
+            LEFT JOIN courses ON lessons.course_id = courses.course_id
+        """)
+        lessons = cursor.fetchall()
+
+        return jsonify(lessons)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+    finally:
+        cursor.close()
+        connection.close()
+
 if __name__ == '__main__':
     app.run(debug=True)

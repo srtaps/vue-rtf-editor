@@ -37,6 +37,19 @@ INSERT INTO courses (course_id, title, info, professor) VALUES
     (4, 'Organic Chemistry', 'Study of organic compounds and reactions', 'Dr. Brown'),
     (5, 'Literature Analysis', 'Critical analysis of classical literature', 'Prof. Davis');
 
+CREATE TABLE IF NOT EXISTS lessons (
+    lesson_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT,
+    course_id INT,
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
+
+INSERT INTO lessons (title, content, course_id) VALUES
+    ('Introduction to MySQL', 'Learn the basics of database management', 1),
+    ('Advanced Query Techniques', 'Deep dive into complex SQL queries', 2),
+    ('Database Design Principles', 'Understanding normalization and schema design', 3);
+
 -- Optional: Add an index to email to speed up queries based on email
 CREATE INDEX idx_email ON users(email);
 
