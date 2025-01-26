@@ -102,29 +102,29 @@ const fetchCourses = async () => {
 };
 
 const handleSubmit = async () => {
-  // const url = isEditing.value ? `lessons/${route.query.lessonId}` : "lessons";
-  // const method = isEditing.value ? "PUT" : "POST";
-  // content = getContent();
-  //
-  // try {
-  //   const response = await fetch(`http://localhost:5000/${url}`, {
-  //     method,
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       title: title.value,
-  //       content: content,
-  //       course_id: courseId.value,
-  //     }),
-  //   });
-  //   if (!response.ok) {
-  //     throw new Error("Failed to update lesson");
-  //   }
-  //   router.push("/lessons");
-  // } catch (err) {
-  //   error.value = err.message;
-  // }
+  const url = isEditing.value ? `lessons/${route.query.lessonId}` : "lessons";
+  const method = isEditing.value ? "PUT" : "POST";
+  const content = getContent();
+
+  try {
+    const response = await fetch(`http://localhost:5000/${url}`, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: title.value,
+        content: content,
+        course_id: courseId.value,
+      }),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to update lesson");
+    }
+    router.push("/lessons");
+  } catch (err) {
+    error.value = err.message;
+  }
 };
 
 function getContent() {

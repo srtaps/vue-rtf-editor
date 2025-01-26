@@ -38,11 +38,10 @@ def register():
         password = data['password']
         
         hashed_password = generate_password_hash(password)
-        cursor.execute(
-            '''
+        cursor.execute("""
             INSERT INTO users (first_name, last_name, email, password_hash)
             VALUES (%s, %s, %s, %s)
-            ''', 
+        """, 
             (firstName, lastName, email, hashed_password)
         )
         connection.commit()
@@ -71,12 +70,12 @@ def login():
         email = data['email'].lower().strip()
         password = data['password']
         
-        cursor.execute('''
+        cursor.execute("""
             SELECT users.*, roles.role_name as role_name 
             FROM users 
             JOIN roles ON users.role_id = roles.role_id 
             WHERE users.email = %s
-        ''', (email,))
+        """, (email,))
         user = cursor.fetchone()
         
         if user and check_password_hash(user['password_hash'], password):
@@ -285,11 +284,10 @@ def add_course():
         info = data['info']
         professor = data['professor']
 
-        cursor.execute(
-            '''
+        cursor.execute("""
             INSERT INTO courses (title, info, professor)
             VALUES (%s, %s, %s)
-            ''', 
+        """, 
             (title, info, professor)
         )
         connection.commit()
@@ -412,6 +410,81 @@ def get_lesson(lesson_id):
 
         return jsonify(lesson)
 
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+    finally:
+        cursor.close()
+        connection.close()
+
+# Add lesson
+@app.route('/lessons', methods=['POST'])
+def add_lesson():
+    connection, cursor = get_db()
+    try:
+        data = request.get_json()
+
+        title = data['title']
+        content = data['content']
+        course_id = data['course_id']
+
+        cursor.execute("""
+            INSERT INTO lessons (title, content, course_id)
+            VALUES (%s, %s, %s)
+        """, 
+            (title, content, course_id)
+        )
+        connection.commit()
+        
+        return jsonify({'message': 'Lesson added successfully'}), 201
+
+    except KeyError as e:
+        return jsonify({
+            'error': f'Missing required field: {str(e)}'
+        }), 400
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+    finally:
+        cursor.close()
+        connection.close()
+
+# Update lesson
+@app.route('/lessons/<int:lesson_id>', methods=['PUT'])
+def update_lesson(lesson_id):
+    connection, cursor = get_db()
+    try:
+        data = request.json
+
+        cursor.execute("SELECT * FROM lessons WHERE lesson_id = %s", (lesson_id,))
+        lesson = cursor.fetchone()
+
+        if lesson is None:
+            return jsonify({'message': 'Lesson not found.'}), 404
+        
+        cursor.execute("""
+            UPDATE lessons 
+            SET title = %s,
+                content = %s,
+                course_id = %s
+            WHERE lesson_id = %s
+        """, (
+            data['title'],
+            data['content'],
+            data['course_id'],
+            lesson_id
+        ))
+        
+        connection.commit()
+
+        return jsonify({'message': 'Lesson has been updated.'})
+    
+    except KeyError as e:
+        return jsonify({
+            'error': f'Missing required field: {str(e)}'
+        }), 400
+        
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
