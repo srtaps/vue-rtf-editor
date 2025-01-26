@@ -3,10 +3,26 @@
     <div class="navigation__logo">Placeholder</div>
     <div class="navigation__links">
       <ul class="link__list">
-        <li><a href="/home">Home</a></li>
-        <li><a href="/users">Users</a></li>
-        <li><a href="/courses">Courses</a></li>
-        <li><a href="/lessons">Lessons</a></li>
+        <li>
+          <router-link to="/home" active-class="active-link">
+            Home
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/users" active-class="active-link"
+            >Users
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/courses" active-class="active-link"
+            >Courses
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/lessons" active-class="active-link"
+            >Lessons
+          </router-link>
+        </li>
       </ul>
       <button @click="handleLogout" class="button button--logout">
         Logout
@@ -54,11 +70,19 @@ const handleLogout = () => {
 
 .link__list a {
   text-decoration: none;
-  transition: text-decoration 0.3s ease;
 }
 
 .link__list a:hover {
   color: #1c96b6;
+  text-decoration: underline;
+}
+
+.active-link {
+  font-weight: bold;
+  color: #4ad0e3;
+}
+
+a.active-link {
   text-decoration: underline;
 }
 </style>
