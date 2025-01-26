@@ -17,6 +17,7 @@
         <input
           v-model="title"
           type="text"
+          class="mw-ma"
           id="lesson-title"
           name="title"
           required
@@ -35,7 +36,7 @@
 
         <Editor ref="editorRef" @editor-ready="setContent" class="mt-32" />
 
-        <button class="button button--submit mt-32" type="submit">
+        <button class="button button--submit mt-32 mw-ma" type="submit">
           {{ isEditing ? "Update" : "Add" }}
         </button>
       </form>
