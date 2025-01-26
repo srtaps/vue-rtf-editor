@@ -26,7 +26,7 @@
             <tr v-for="course in courses" :key="course.course_id">
               <td>{{ course.course_id }}</td>
               <td>{{ course.title }}</td>
-              <td class="course-info">{{ course.info }}</td>
+              <td class="column-info">{{ course.info }}</td>
               <td>{{ course.professor }}</td>
               <td>
                 <button
@@ -125,24 +125,4 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-.button--add {
-  background-color: #2c2c38;
-  border: 2px solid #645fc6;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 1.1rem;
-  border-radius: 4px;
-}
-
-.button--add:hover {
-  background-color: #525868;
-}
-
-.course-info {
-  max-width: 300px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-</style>
+<style scoped></style>
