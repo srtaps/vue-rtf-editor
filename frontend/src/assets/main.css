@@ -176,6 +176,9 @@ select {
 .vue-views__container {
   width: 80%;
   margin: 24px auto;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 12px;
 }
 
 table {
