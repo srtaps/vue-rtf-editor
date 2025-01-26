@@ -68,21 +68,21 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem("access_token");
+// router.beforeEach((to, from, next) => {
+//   const token = localStorage.getItem("access_token");
 
-  if (to.meta.requiresAuth && !token) {
-    next("/login");
-    return;
-  } else if ((to.name === "Login" || to.name === "Register") && token) {
-    next("/home");
-    return;
-  } else if (to.path === "/") {
-    next("/login");
-    return;
-  }
+//   if (to.meta.requiresAuth && !token) {
+//     next("/login");
+//     return;
+//   } else if ((to.name === "Login" || to.name === "Register") && token) {
+//     next("/home");
+//     return;
+//   } else if (to.path === "/") {
+//     next("/login");
+//     return;
+//   }
 
-  next();
-});
+//   next();
+// });
 
 export default router;

@@ -137,17 +137,6 @@ select {
   background-color: #424653;
 }
 
-.button--add-post {
-  background-color: #645fc6;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-
-.button--add-post:hover {
-  background-color: #433ead;
-}
-
 .button--add {
   background-color: #2c2c38;
   border: 2px solid #645fc6;
@@ -178,11 +167,6 @@ select {
 
 .button--delete:hover {
   background-color: #b84146;
-}
-
-.btn-container {
-  text-align: center;
-  padding: 24px 0px;
 }
 
 .vue-views {
