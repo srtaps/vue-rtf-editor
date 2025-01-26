@@ -11,7 +11,6 @@
           <div ref="editorElement">
             <ckeditor
               v-if="editor && config"
-              :modelValue="config.initialData"
               :editor="editor"
               :config="config"
               @ready="onReady"
@@ -64,6 +63,8 @@ import {
 } from "ckeditor5";
 
 import "ckeditor5/ckeditor5.css";
+
+const emit = defineEmits(["editor-ready"]);
 
 const LICENSE_KEY = "GPL"; // or <YOUR_LICENSE_KEY>.
 
@@ -246,15 +247,34 @@ const config = computed(() => {
   };
 });
 
+const editorInstance = ref(null);
+
+function getEditorContent() {
+  return editorInstance.value.getData();
+}
+
+function setEditorContent(newContent) {
+  editorInstance.value.setData(newContent);
+}
+
 onMounted(() => {
   isLayoutReady.value = true;
 });
 
 function onReady(editor) {
+  editorInstance.value = editor;
+
   [...editorToolbar.value.children].forEach((child) => child.remove());
   [...editorMenuBar.value.children].forEach((child) => child.remove());
 
   editorToolbar.value.appendChild(editor.ui.view.toolbar.element);
   editorMenuBar.value.appendChild(editor.ui.view.menuBarView.element);
+
+  emit("editor-ready");
 }
+
+defineExpose({
+  getEditorContent,
+  setEditorContent,
+});
 </script>
