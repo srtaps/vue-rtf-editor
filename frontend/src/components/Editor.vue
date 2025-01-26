@@ -65,9 +65,6 @@ import {
 
 import "ckeditor5/ckeditor5.css";
 
-/**
- * Create a free account with a trial: https://portal.ckeditor.com/checkout?plan=free
- */
 const LICENSE_KEY = "GPL"; // or <YOUR_LICENSE_KEY>.
 
 const editorToolbar = useTemplateRef("editorToolbarElement");
