@@ -79,7 +79,6 @@ const handleLogout = () => {
 
 .active-link {
   font-weight: bold;
-  color: #4ad0e3;
 }
 
 a.active-link {
