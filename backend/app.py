@@ -396,5 +396,51 @@ def get_lessons():
         cursor.close()
         connection.close()
 
+# Get individual lesson
+@app.route('/lessons/<int:lesson_id>', methods=['GET'])
+def get_lesson(lesson_id):
+    connection, cursor = get_db()
+    try:
+        cursor.execute("""
+            SELECT * FROM lessons 
+            WHERE lesson_id = %s
+        """, (lesson_id,))
+        lesson = cursor.fetchone()
+
+        if not lesson:
+            return jsonify({'error': 'Course not found'}), 404
+
+        return jsonify(lesson)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+    finally:
+        cursor.close()
+        connection.close()
+
+# Delete lesson
+@app.route('/lessons/<int:lesson_id>', methods=['DELETE'])
+def delete_lesson(lesson_id):
+    connection, cursor = get_db()
+    try:
+        cursor.execute("SELECT * FROM lessons WHERE lesson_id = %s", (lesson_id,))
+        lesson = cursor.fetchone()
+        
+        if lesson is None:
+            return jsonify({'message': 'Lesson not found.'}), 404
+
+        cursor.execute("DELETE FROM lessons WHERE lesson_id = %s", (lesson_id,))
+        connection.commit()
+
+        return jsonify({'message': 'Lesson has been deleted.'})
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+    finally:
+        cursor.close()
+        connection.close()
+
 if __name__ == '__main__':
     app.run(debug=True)
