@@ -42,46 +42,4 @@ const handleLogout = () => {
 };
 </script>
 
-<style scoped>
-.navigation {
-  background-color: #2c2c38;
-  font-size: 1.1rem;
-  padding: 16px 32px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.navigation__logo {
-  margin: auto 0;
-}
-
-.navigation__links {
-  display: flex;
-  gap: 24px;
-}
-
-.link__list {
-  list-style: none;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.link__list a {
-  text-decoration: none;
-}
-
-.link__list a:hover {
-  color: #1c96b6;
-  text-decoration: underline;
-}
-
-.active-link {
-  font-weight: bold;
-}
-
-a.active-link {
-  text-decoration: underline;
-}
-</style>
+<style scoped></style>
