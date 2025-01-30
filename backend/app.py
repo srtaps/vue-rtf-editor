@@ -394,6 +394,26 @@ def get_lessons():
         cursor.close()
         connection.close()
 
+# Get lessons tied to one course
+@app.route('/course/<int:course_id>/lessons', methods=['GET'])
+def get_course_lessons(course_id):
+    connection, cursor = get_db()
+    try:
+        cursor.execute("""
+            SELECT title, content FROM lessons 
+            WHERE course_id = %s
+        """, (course_id,))
+        lessons = cursor.fetchall()
+
+        return jsonify(lessons)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+    finally:
+        cursor.close()
+        connection.close()
+
 # Get individual lesson
 @app.route('/lessons/<int:lesson_id>', methods=['GET'])
 def get_lesson(lesson_id):
