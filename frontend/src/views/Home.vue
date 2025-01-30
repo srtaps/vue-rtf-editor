@@ -18,7 +18,12 @@
             <p class="info">{{ course.info }}</p>
             <p class="professor">Professor: {{ course.professor }}</p>
           </div>
-          <button class="button button--submit mt-16">Visit</button>
+          <button
+            @click="viewCourse(course.course_id)"
+            class="button button--submit mt-16"
+          >
+            Visit
+          </button>
         </div>
       </div>
     </div>
@@ -28,7 +33,9 @@
 <script setup>
 import Navbar from "@/components/Navbar.vue";
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const courses = ref([]);
 const loading = ref(true);
 const error = ref(null);
@@ -48,6 +55,13 @@ const fetchCourses = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+const viewCourse = (v) => {
+  router.push({
+    name: "CourseContent",
+    query: { v },
+  });
 };
 
 onMounted(() => {

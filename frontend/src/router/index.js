@@ -7,6 +7,7 @@ import Courses from "@/views/Courses.vue";
 import EditCourse from "@/views/EditCourse.vue";
 import Lessons from "@/views/Lessons.vue";
 import EditLesson from "@/views/EditLesson.vue";
+import CourseContent from "@/views/CourseContent.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,12 @@ const router = createRouter({
       path: "/home",
       name: "Home",
       component: Home,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/view",
+      name: "CourseContent",
+      component: CourseContent,
       meta: { requiresAuth: true },
     },
     {
