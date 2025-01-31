@@ -1,6 +1,6 @@
 <template>
   <nav class="navigation">
-    <div class="navigation__logo">Placeholder</div>
+    <div class="navigation__logo">VueCourse</div>
     <div class="navigation__links">
       <ul class="link__list">
         <li>

@@ -46,6 +46,7 @@ select {
 
 .navigation__logo {
   margin: auto 0;
+  font-weight: bold;
 }
 
 .navigation__links {
