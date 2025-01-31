@@ -1,6 +1,6 @@
 # VueCourse
 
-A quiz made for booth and promotional use by VTŠ Apps Team.
+VueCourse is a college assignment designed to showcase and combine the concepts learned in two courses. It's using Vue.js for the frontend, and Flask for the backend.
 
 ## Prerequisites:
 
