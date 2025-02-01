@@ -19,6 +19,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
 
 const router = useRouter();
 const email = ref("");
@@ -46,12 +47,14 @@ const loginSubmit = async (event) => {
       email.value = "";
       password.value = "";
 
-      router.push("/home");
+      router.push("/home").then(() => toast.success(data.message));
     } else {
-      console.log(data.error);
+      // console.log(data.error);
+      toast.error(data.error);
     }
   } catch (err) {
     console.error("Login error:", err.message);
+    toast.error(err.message);
   } finally {
     isLoading.value = false;
   }

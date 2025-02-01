@@ -49,6 +49,7 @@
 import Navbar from "@/components/Navbar.vue";
 import { ref, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
 
 const router = useRouter();
 const route = useRoute();
@@ -104,13 +105,14 @@ const handleSubmit = async () => {
       }),
     });
 
-    if (!response.ok) {
-      throw new Error("Failed to update course");
-    }
+    const data = await response.json();
 
-    router.push("/courses");
+    if (response.ok) {
+      router.push("/courses").then(() => toast.success(data.message));
+    }
   } catch (err) {
     error.value = err.message;
+    toast.error(err.message);
   }
 };
 

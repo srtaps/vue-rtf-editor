@@ -54,6 +54,7 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import Navbar from "@/components/Navbar.vue";
+import { toast } from "vue3-toastify";
 
 const router = useRouter();
 const users = ref([]);
@@ -100,13 +101,15 @@ const deleteUser = async (userId) => {
         },
       });
 
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
+      const data = await response.json();
 
-      fetchUsers();
+      if (response.ok) {
+        toast.success(data.message);
+        fetchUsers();
+      }
     } catch (err) {
       console.error("Error deleting user:", err);
+      toast.error(err.message);
     }
   }
 };

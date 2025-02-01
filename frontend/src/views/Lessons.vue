@@ -54,6 +54,7 @@
 import Navbar from "@/components/Navbar.vue";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
 
 const router = useRouter();
 const lessons = ref([]);
@@ -109,13 +110,15 @@ const deleteLesson = async (lessonId) => {
         }
       );
 
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
+      const data = await response.json();
 
-      fetchLessons();
+      if (response.ok) {
+        toast.success(data.message);
+        fetchLessons();
+      }
     } catch (err) {
       console.error("Error deleting lesson:", err);
+      toast.error(err.message);
     }
   }
 };

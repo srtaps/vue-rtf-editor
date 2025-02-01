@@ -35,6 +35,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
 
 const router = useRouter();
 const firstName = ref("");
@@ -69,12 +70,14 @@ const registerSubmit = async (event) => {
       email.value = "";
       password.value = "";
 
-      router.push("/login");
+      router.push("/login").then(() => toast.success(data.message));
     } else {
-      console.log(data.error);
+      // console.log(data.error);
+      toast.error(data.error);
     }
   } catch (err) {
     console.error("Register error:", err.message);
+    toast.error(err.message);
   } finally {
     isLoading.value = false;
   }

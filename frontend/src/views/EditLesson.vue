@@ -49,6 +49,7 @@ import Navbar from "@/components/Navbar.vue";
 import Editor from "@/components/Editor.vue";
 import { ref, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
 
 const router = useRouter();
 const route = useRoute();
@@ -119,12 +120,15 @@ const handleSubmit = async () => {
         course_id: courseId.value,
       }),
     });
-    if (!response.ok) {
-      throw new Error("Failed to update lesson");
+
+    const data = await response.json();
+
+    if (response.ok) {
+      router.push("/lessons").then(() => toast.success(data.message));
     }
-    router.push("/lessons");
   } catch (err) {
     error.value = err.message;
+    toast.error(err.message);
   }
 };
 

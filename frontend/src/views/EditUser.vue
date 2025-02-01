@@ -53,6 +53,7 @@
 import Navbar from "@/components/Navbar.vue";
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
 
 const router = useRouter();
 const route = useRoute();
@@ -117,13 +118,14 @@ const editSubmit = async () => {
       }),
     });
 
-    if (!response.ok) {
-      throw new Error("Failed to update user");
-    }
+    const data = await response.json();
 
-    router.push("/users");
+    if (response.ok) {
+      router.push("/users").then(() => toast.success(data.message));
+    }
   } catch (err) {
     error.value = err.message;
+    toast.error(err.message);
   }
 };
 
