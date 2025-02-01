@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { isTokenExpired } from "@/utils/auth";
 import AuthCard from "@/components/AuthCard.vue";
 import Home from "@/views/Home.vue";
 import Users from "@/views/Users.vue";
@@ -75,21 +76,28 @@ const router = createRouter({
   ],
 });
 
-// router.beforeEach((to, from, next) => {
-//   const token = localStorage.getItem("access_token");
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem("access_token");
 
-//   if (to.meta.requiresAuth && !token) {
-//     next("/login");
-//     return;
-//   } else if ((to.name === "Login" || to.name === "Register") && token) {
-//     next("/home");
-//     return;
-//   } else if (to.path === "/") {
-//     next("/login");
-//     return;
-//   }
+  if (token && isTokenExpired()) {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user_role");
+    next("/login");
+    return;
+  }
 
-//   next();
-// });
+  if (to.meta.requiresAuth && !token) {
+    next("/login");
+    return;
+  } else if ((to.name === "Login" || to.name === "Register") && token) {
+    next("/home");
+    return;
+  } else if (to.path === "/") {
+    next("/login");
+    return;
+  }
+
+  next();
+});
 
 export default router;

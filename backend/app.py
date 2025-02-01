@@ -4,6 +4,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt, jwt_required
+from functools import wraps
+from datetime import timedelta
 
 # Create new DB connection
 def get_db():
@@ -20,10 +22,26 @@ app = Flask(__name__)
 
 # Set up Flask-JWT-Extended
 app.config['JWT_SECRET_KEY'] = 'n96zyydqxo09m7xs9c5ot2r828w52zs9' # Change for production
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=6)
 jwt = JWTManager(app)
 
 # Allow requests from Vue
 CORS(app)
+
+# Decorator for admin-only routes
+def role_required(allowed_roles):
+    def wrapper(fn):
+        @jwt_required()
+        @wraps(fn)
+        def decorator(*args, **kwargs):
+            claims = get_jwt()
+            user_role = claims.get('role')
+            if not user_role or user_role not in allowed_roles:
+                return jsonify({'error': 'Not Authorized'}), 403
+           
+            return fn(*args, **kwargs)
+        return decorator
+    return wrapper
 
 # Register user route
 @app.route("/register", methods=['POST'])
@@ -107,6 +125,7 @@ def login():
 
 # Get users
 @app.route('/users', methods=['GET'])
+@role_required(['Admin'])
 def get_users():
     connection, cursor = get_db()
     try:
@@ -128,6 +147,7 @@ def get_users():
     
 # Get individual user
 @app.route('/users/<int:user_id>', methods=['GET'])
+@role_required(['Admin'])
 def get_user(user_id):
     connection, cursor = get_db()
     try:
@@ -154,6 +174,7 @@ def get_user(user_id):
 
 # Update user
 @app.route('/users/<int:user_id>', methods=['PUT'])
+@role_required(['Admin'])
 def update_user(user_id):
     connection, cursor = get_db()
     try:
@@ -198,6 +219,7 @@ def update_user(user_id):
 
 # Delete user
 @app.route('/users/<int:user_id>', methods=['DELETE'])
+@role_required(['Admin'])
 def delete_user(user_id):
     connection, cursor = get_db()
     try:
@@ -221,6 +243,7 @@ def delete_user(user_id):
 
 # Get roles
 @app.route('/roles', methods=['GET'])
+@role_required(['Admin'])
 def get_roles():
     connection, cursor = get_db()
     try:
@@ -238,6 +261,7 @@ def get_roles():
 
 # Get courses
 @app.route('/courses', methods=['GET'])
+@jwt_required()
 def get_courses():
     connection, cursor = get_db()
     try:
@@ -255,6 +279,7 @@ def get_courses():
 
 # Get individual course
 @app.route('/courses/<int:course_id>', methods=['GET'])
+@jwt_required()
 def get_course(course_id):
     connection, cursor = get_db()
     try:
@@ -275,6 +300,7 @@ def get_course(course_id):
 
 # Add course
 @app.route('/courses', methods=['POST'])
+@role_required(['Admin'])
 def add_course():
     connection, cursor = get_db()
     try:
@@ -308,6 +334,7 @@ def add_course():
 
 # Update course
 @app.route('/courses/<int:course_id>', methods=['PUT'])
+@role_required(['Admin'])
 def update_course(course_id):
     connection, cursor = get_db()
     try:
@@ -350,6 +377,7 @@ def update_course(course_id):
 
 # Delete course
 @app.route('/courses/<int:course_id>', methods=['DELETE'])
+@role_required(['Admin'])
 def delete_course(course_id):
     connection, cursor = get_db()
     try:
@@ -373,6 +401,7 @@ def delete_course(course_id):
 
 # Get lessons
 @app.route('/lessons', methods=['GET'])
+@jwt_required()
 def get_lessons():
     connection, cursor = get_db()
     try:
@@ -396,6 +425,7 @@ def get_lessons():
 
 # Get lessons tied to one course
 @app.route('/course/<int:course_id>/lessons', methods=['GET'])
+@jwt_required()
 def get_course_lessons(course_id):
     connection, cursor = get_db()
     try:
@@ -416,6 +446,7 @@ def get_course_lessons(course_id):
 
 # Get individual lesson
 @app.route('/lessons/<int:lesson_id>', methods=['GET'])
+@jwt_required()
 def get_lesson(lesson_id):
     connection, cursor = get_db()
     try:
@@ -439,6 +470,7 @@ def get_lesson(lesson_id):
 
 # Add lesson
 @app.route('/lessons', methods=['POST'])
+@role_required(['Admin'])
 def add_lesson():
     connection, cursor = get_db()
     try:
@@ -472,6 +504,7 @@ def add_lesson():
 
 # Update lesson
 @app.route('/lessons/<int:lesson_id>', methods=['PUT'])
+@role_required(['Admin'])
 def update_lesson(lesson_id):
     connection, cursor = get_db()
     try:
@@ -514,6 +547,7 @@ def update_lesson(lesson_id):
 
 # Delete lesson
 @app.route('/lessons/<int:lesson_id>', methods=['DELETE'])
+@role_required(['Admin'])
 def delete_lesson(lesson_id):
     connection, cursor = get_db()
     try:

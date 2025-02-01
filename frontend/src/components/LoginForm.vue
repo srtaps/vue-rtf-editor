@@ -20,6 +20,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue3-toastify";
+import { jwtDecode } from "jwt-decode";
 
 const router = useRouter();
 const email = ref("");
@@ -43,6 +44,9 @@ const loginSubmit = async (event) => {
 
     if (response.ok) {
       localStorage.setItem("access_token", data.access_token);
+
+      const decoded = jwtDecode(data.access_token);
+      localStorage.setItem("user_role", decoded.role);
 
       email.value = "";
       password.value = "";
