@@ -7,7 +7,6 @@ VueCourse is a college assignment designed to showcase and combine the concepts 
 - NodeJS (used v20.18.1)
 - Python (used v3.13.1)
 - MySQL Server (used v8.4)
-- MySQL Workbench to execute `database.sql`
 
 ## Instructions:
 
@@ -17,6 +16,7 @@ VueCourse is a college assignment designed to showcase and combine the concepts 
   - Run the command `python -m venv myvenv`
   - On Windows: `myenv\Scripts\activate`
   - Now run `pip install -r requirements.txt`
+  - Create the database with `python database.py`
   - To start Flask, run `python app.py`
   - If using VSCode: Press `Ctrl Shift P` > Python: Select Interpreter > Enter interpreter path... > Find > Navigate to `myenv` > Scripts > python.exe. You can now run app.py by pressing a button
 
