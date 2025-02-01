@@ -33,12 +33,13 @@
 
 <script setup>
 import { useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
 
 const router = useRouter();
 
 const handleLogout = () => {
   localStorage.removeItem("access_token");
-  router.push("/login");
+  router.push("/login").then(() => toast.success("Logged out"));
 };
 </script>
 
