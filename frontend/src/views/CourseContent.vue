@@ -48,21 +48,38 @@ const loading = ref(true);
 const error = ref(null);
 
 const fetchCourse = async () => {
+  const token = localStorage.getItem("access_token");
+
   try {
     const [courseResponse, lessonsResponse] = await Promise.all([
-      fetch(`http://localhost:5000/courses/${courseId}`),
-      fetch(`http://localhost:5000/course/${courseId}/lessons`),
+      fetch(`http://localhost:5000/courses/${courseId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }),
+      fetch(`http://localhost:5000/course/${courseId}/lessons`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }),
     ]);
 
+    const dataCourse = await courseResponse.json();
+    const dataLessons = await lessonsResponse.json();
+
     if (!courseResponse.ok) {
-      throw new Error("Failed to fetch course data");
+      throw new Error(dataCourse.msg || dataCourse.error);
     }
     if (!lessonsResponse.ok) {
-      throw new Error("Failed to fetch lessons");
+      throw new Error(dataLessons.msg || dataCourse.error);
     }
 
-    course.value = await courseResponse.json();
-    lessons.value = await lessonsResponse.json();
+    course.value = dataCourse;
+    lessons.value = dataLessons;
   } catch (err) {
     error.value = err.message;
   } finally {

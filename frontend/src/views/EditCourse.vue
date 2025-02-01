@@ -66,14 +66,25 @@ const error = ref(null);
 
 const fetchCourse = async () => {
   if (isEditing.value) {
-    try {
-      const response = await fetch(`http://localhost:5000/courses/${courseId}`);
+    const token = localStorage.getItem("access_token");
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch course");
-      }
+    try {
+      const response = await fetch(
+        `http://localhost:5000/courses/${courseId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.msg || data.error);
+      }
 
       title.value = data.title;
       info.value = data.info;
@@ -92,10 +103,13 @@ const handleSubmit = async () => {
   const url = isEditing.value ? `courses/${route.query.courseId}` : "courses";
   const method = isEditing.value ? "PUT" : "POST";
 
+  const token = localStorage.getItem("access_token");
+
   try {
     const response = await fetch(`http://localhost:5000/${url}`, {
       method,
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -107,9 +121,11 @@ const handleSubmit = async () => {
 
     const data = await response.json();
 
-    if (response.ok) {
-      router.push("/courses").then(() => toast.success(data.message));
+    if (!response.ok) {
+      throw new Error(data.msg || data.error);
     }
+
+    router.push("/courses").then(() => toast.success(data.message));
   } catch (err) {
     error.value = err.message;
     toast.error(err.message);

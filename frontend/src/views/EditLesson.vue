@@ -67,14 +67,25 @@ let editorData = ``;
 
 const fetchLesson = async () => {
   if (isEditing.value) {
-    try {
-      const response = await fetch(`http://localhost:5000/lessons/${lessonId}`);
+    const token = localStorage.getItem("access_token");
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch lesson");
-      }
+    try {
+      const response = await fetch(
+        `http://localhost:5000/lessons/${lessonId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.msg || data.error);
+      }
 
       title.value = data.title;
       courseId.value = data.course_id;
@@ -90,14 +101,23 @@ const fetchLesson = async () => {
 };
 
 const fetchCourses = async () => {
+  const token = localStorage.getItem("access_token");
+
   try {
-    const response = await fetch("http://localhost:5000/courses");
+    const response = await fetch("http://localhost:5000/courses", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
 
     if (!response.ok) {
-      throw new Error("Failed to fetch courses");
+      throw new Error(data.msg || data.error);
     }
 
-    courses.value = await response.json();
+    courses.value = data;
   } catch (err) {
     error.value = err.message;
   }
@@ -108,10 +128,13 @@ const handleSubmit = async () => {
   const method = isEditing.value ? "PUT" : "POST";
   const content = getContent();
 
+  const token = localStorage.getItem("access_token");
+
   try {
     const response = await fetch(`http://localhost:5000/${url}`, {
       method,
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -123,9 +146,11 @@ const handleSubmit = async () => {
 
     const data = await response.json();
 
-    if (response.ok) {
-      router.push("/lessons").then(() => toast.success(data.message));
+    if (!response.ok) {
+      throw new Error(data.msg || data.error);
     }
+
+    router.push("/lessons").then(() => toast.success(data.message));
   } catch (err) {
     error.value = err.message;
     toast.error(err.message);

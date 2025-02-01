@@ -62,19 +62,23 @@ const loading = ref(true);
 const error = ref(null);
 
 const fetchUsers = async () => {
+  const token = localStorage.getItem("access_token");
+
   try {
     const response = await fetch("http://localhost:5000/users", {
       method: "GET",
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error(`Status: ${response.status}`);
+      throw new Error(data.msg || data.error);
     }
 
-    const data = await response.json();
     users.value = data;
   } catch (err) {
     console.error("Error fetching users:", err);
@@ -93,20 +97,25 @@ const editUser = (userId) => {
 
 const deleteUser = async (userId) => {
   if (confirm(`Delete user ID: ${userId}?`)) {
+    const token = localStorage.getItem("access_token");
+
     try {
       const response = await fetch(`http://localhost:5000/users/${userId}`, {
         method: "DELETE",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
 
       const data = await response.json();
 
-      if (response.ok) {
-        toast.success(data.message);
-        fetchUsers();
+      if (!response.ok) {
+        throw new Error(data.msg || data.error);
       }
+
+      toast.success(data.message);
+      fetchUsers();
     } catch (err) {
       console.error("Error deleting user:", err);
       toast.error(err.message);

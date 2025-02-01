@@ -4,14 +4,14 @@
     <div class="vue-views__container">
       <h2>Courses</h2>
 
-      <button @click="addCourse()" class="button button--add mt-32">
-        Add course
-      </button>
-
       <div v-if="loading" class="mt-16">Loading courses...</div>
       <div v-if="error" class="mt-16">Error: {{ error }}</div>
 
       <div v-if="!loading && !error" class="">
+        <button @click="addCourse()" class="button button--add mt-32">
+          Add course
+        </button>
+
         <table class="">
           <thead>
             <tr>
@@ -62,19 +62,23 @@ const loading = ref(true);
 const error = ref(null);
 
 const fetchCourses = async () => {
+  const token = localStorage.getItem("access_token");
+
   try {
     const response = await fetch("http://localhost:5000/courses", {
       method: "GET",
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error(`Status: ${response.status}`);
+      throw new Error(data.msg || data.error);
     }
 
-    const data = await response.json();
     courses.value = data;
   } catch (err) {
     console.error("Error fetching courses:", err);
@@ -99,12 +103,15 @@ const addCourse = () => {
 
 const deleteCourse = async (courseId) => {
   if (confirm(`Delete course ID: ${courseId}?`)) {
+    const token = localStorage.getItem("access_token");
+
     try {
       const response = await fetch(
         `http://localhost:5000/courses/${courseId}`,
         {
           method: "DELETE",
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -112,10 +119,12 @@ const deleteCourse = async (courseId) => {
 
       const data = await response.json();
 
-      if (response.ok) {
-        toast.success(data.message);
-        fetchCourses();
+      if (!response.ok) {
+        throw new Error(data.msg || data.error);
       }
+
+      toast.success(data.message);
+      fetchCourses();
     } catch (err) {
       console.error("Error deleting course:", err);
       toast.error(err.message);

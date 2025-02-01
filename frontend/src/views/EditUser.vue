@@ -69,14 +69,22 @@ const loading = ref(true);
 const error = ref(null);
 
 const fetchUser = async () => {
-  try {
-    const response = await fetch(`http://localhost:5000/users/${userId}`);
+  const token = localStorage.getItem("access_token");
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch user");
-    }
+  try {
+    const response = await fetch(`http://localhost:5000/users/${userId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
     const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.msg || data.error);
+    }
 
     firstName.value = data.first_name;
     lastName.value = data.last_name;
@@ -90,11 +98,19 @@ const fetchUser = async () => {
 };
 
 const fetchRoles = async () => {
+  const token = localStorage.getItem("access_token");
+
   try {
-    const response = await fetch("http://localhost:5000/roles");
+    const response = await fetch("http://localhost:5000/roles", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!response.ok) {
-      throw new Error("Failed to fetch roles");
+      throw new Error(data.msg || data.error);
     }
 
     roles.value = await response.json();
@@ -104,10 +120,13 @@ const fetchRoles = async () => {
 };
 
 const editSubmit = async () => {
+  const token = localStorage.getItem("access_token");
+
   try {
     const response = await fetch(`http://localhost:5000/users/${userId}`, {
       method: "PUT",
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -120,9 +139,11 @@ const editSubmit = async () => {
 
     const data = await response.json();
 
-    if (response.ok) {
-      router.push("/users").then(() => toast.success(data.message));
+    if (!response.ok) {
+      throw new Error(data.msg || data.error);
     }
+
+    router.push("/users").then(() => toast.success(data.message));
   } catch (err) {
     error.value = err.message;
     toast.error(err.message);

@@ -41,16 +41,29 @@ const loading = ref(true);
 const error = ref(null);
 
 const fetchCourses = async () => {
+  const token = localStorage.getItem("access_token");
+
   try {
     loading.value = true;
     error.value = null;
-    const response = await fetch("http://localhost:5000/courses");
+
+    const response = await fetch("http://localhost:5000/courses", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error("Failed to fetch courses");
+      throw new Error(data.msg || data.error);
     }
-    courses.value = await response.json();
+
+    courses.value = data;
   } catch (err) {
-    error.value = "Error loading courses. Please try again later.";
+    error.value = err.message;
     console.error("Error:", err);
   } finally {
     loading.value = false;

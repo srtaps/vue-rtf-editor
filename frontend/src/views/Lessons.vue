@@ -4,14 +4,14 @@
     <div class="vue-views__container">
       <h2>Lessons</h2>
 
-      <button @click="addLesson()" class="button button--add mt-32">
-        Add lesson
-      </button>
-
       <div v-if="loading" class="mt-16">Loading lessons...</div>
       <div v-if="error" class="mt-16">Error: {{ error }}</div>
 
       <div v-if="!loading && !error" class="">
+        <button @click="addLesson()" class="button button--add mt-32">
+          Add lesson
+        </button>
+
         <table class="">
           <thead>
             <tr>
@@ -62,19 +62,23 @@ const loading = ref(true);
 const error = ref(null);
 
 const fetchLessons = async () => {
+  const token = localStorage.getItem("access_token");
+
   try {
     const response = await fetch("http://localhost:5000/lessons", {
       method: "GET",
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error(`Status: ${response.status}`);
+      throw new Error(data.msg || data.error);
     }
 
-    const data = await response.json();
     lessons.value = data;
   } catch (err) {
     console.error("Error fetching lessons:", err);
@@ -99,12 +103,15 @@ const addLesson = () => {
 
 const deleteLesson = async (lessonId) => {
   if (confirm(`Delete lesson ID: ${lessonId}?`)) {
+    const token = localStorage.getItem("access_token");
+
     try {
       const response = await fetch(
         `http://localhost:5000/lessons/${lessonId}`,
         {
           method: "DELETE",
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -112,10 +119,12 @@ const deleteLesson = async (lessonId) => {
 
       const data = await response.json();
 
-      if (response.ok) {
-        toast.success(data.message);
-        fetchLessons();
+      if (!response.ok) {
+        throw new Error(data.msg || data.error);
       }
+
+      toast.success(data.message);
+      fetchLessons();
     } catch (err) {
       console.error("Error deleting lesson:", err);
       toast.error(err.message);
