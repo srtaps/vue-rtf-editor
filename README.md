@@ -1,6 +1,6 @@
 # VueCourse
 
-VueCourse is a college assignment designed to showcase and combine the concepts learned in two courses. It's using Vue.js for the frontend, and Flask for the backend.
+VueCourse is a college project that combines the concepts I've learned in two courses. It uses Vue.js for the frontend, and Flask for the backend. The goal was to implement an RTF (Rich Text Format) editor with the ability to create, edit, and save text documents with rich formatting options such as bold, italics, bullet points. On the backend, Flask handles database storage, user authentication, and the logic for saving and retrieving the saved text.
 
 ## Prerequisites:
 
